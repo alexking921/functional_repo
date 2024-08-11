@@ -1,0 +1,132 @@
+Backup for Lab 3 in case:
+
+(* this construction is saying EITHER the 'type' is an empty tree OR...it's a node with a left subtree and rightsubtree*) 
+type 'key bst = BstEmpty | 
+                BstNode of 'key * 'key bst * 'key bst ;;
+
+
+(*this function finds the 'key' value in the tree you passed to it *)
+let bstIsIn tree key =
+    let rec isInning subtree = (*pass the 'tree' to this helper function where it's then referred to as 'subtree' *)
+        match subtree
+        with    BstEmpty -> false | (*if the subtree matches with BstEmpty, then return false bc we know the key isn't in tree *)
+                BstNode otherKey leftSubtree rightSubtree -> if key < otherKey (*scenario 1: the targetKey is LESS THAN the current nodes key:  *)(*if the subtree matches with the BstNode then we know it's not empty and therefore 3 diff scenarios are possible: *)
+                                                            then isInning leftSubtree (*scenario 1: this means the targetKey could only be in the LEFT subtree, hence why we pass the leftSubtree to the isInning method *)
+                                                            else if key > otherKey(*scenario 2: the target key is GREATER THAN the current nodes key,  *)
+                                                                then isInning rightSubtree(*Scenario 2: therefore the targetKey could only be in the RIGHT subtree, so we pass the rightSubtree to isInning  *)
+                                                                else true (*Scenario 3: this is the GOAL scenario where targetKey = currentKey and we dont need a conditional to test this case because it's the last option and the code would only get to this point IF they were equal *)
+    in isInning tree;;
+
+                
+(*general process of delete function
+1. first FIND the key that is to be deleted and handle the case where the key is NOT in the tree in the first place
+2.  Once found, Use match statements to look at the node and figure out which of 4 main cases you're dealing with (childless node, empty left node, empty right node, node with both left and right subtrees (the hardest case))
+3. Then call the appropriate helper fucntion based on which of those match cases were satisfied*)
+
+
+exception BadEmptyBst;;
+let rec bstMaxKey tree = 
+    match tree
+    with BstEmpty -> raise BadEmptyBst | (**rule 1: *)
+    BstNode(targetKey, _, BstEmpty) -> targetKey |(*rule 2: if node has the targetKey and an empty rightSubtree, then return targetKey (bc targetKey must be largest key) *)
+    BstNode(_, _, rightSubtree) -> bstMaxKey rightSubtree (*rule 3: if the node has a rightSubtree, recursively call the bstMaxKey passing rightSubtree as argument bc if right subtree is not empty, then the largest key value must be in that tree *);;
+
+(*
+let bstDelete tree targetKey =
+    if bstIsIn tree targetKey = false (*double checking the targetKey exists in the tree in the first place, all other rules will be within the 'else' of this condition *)
+    then tree
+    else let rec deleting subtree targetKey = (*this means the key was found and therefore we need to figure out which type of node we'll be deleting by matching with rules *)
+        match subtree
+        with 
+        BstEmpty -> BstEmpty | (*rule 1: *)
+        BstNode(otherKey, BstEmpty, BstEmpty) -> BstEmpty |(*rule 2: dealing with a childless node (easiest case)*)
+        BstNode(otherKey, BstEmpty, rightSubtree) -> rightSubtree | (*rule 3: dealing with node w/ only RIGHT tree (aka empty left side) *)
+        BstNode(otherKey, leftSubtree, BstEmpty) -> leftSubtree | (*rule 4 dealing with node w/ only LEFT subtree (aka empty right side) *)
+        BstNode(otherKey, leftSubtree, rightSubtree) -> if targetKey < otherKey (*rule 5 (HARD CASE) figure out if key is > or < or = to otherKey and call the bstMaxKey for the = case) *)      
+                                                        then BstNode(otherKey, (deleting leftSubtree otherKey), rightSubtree) (*this returns a node where it's leftsubtree is the return value of deleting it's leftSubtree *)
+                                                        else if targetKey > otherKey 
+                                                            then BstNode(otherKey, leftSubtree, (deleting rightSubtree,otherKey))
+                                                        else BstNode((bstMaxKey leftSubtree), leftSubtree, rightSubtree)
+        in deleting tree key (**the actual call to the function after 'deleting' is defined *)
+        ;;
+*)        
+
+let bstDelete tree targetKey =
+    if bstIsIn tree targetKey = false (*double checking the targetKey exists in the tree in the first place, all other rules will be within the 'else' of this condition *)
+    then tree
+    else match tree with(*this means the key was found and therefore we need to figure out which type of node we'll be deleting by matching with rules *) 
+        BstEmpty -> tree | (*rule 1: *)
+        BstNode(otherKey, BstEmpty, BstEmpty) -> BstEmpty |(*rule 2: dealing with a childless node (easiest case)*)
+        BstNode(otherKey, BstEmpty, rightSubtree) -> rightSubtree | (*rule 3: dealing with node w/ only RIGHT tree (aka empty left side) *)
+        BstNode(otherKey, leftSubtree, BstEmpty) -> leftSubtree | (*rule 4 dealing with node w/ only LEFT subtree (aka empty right side) *)
+        BstNode(otherKey, leftSubtree, rightSubtree) -> if targetKey < otherKey (*rule 5 (HARD CASE) figure out if key is > or < or = to otherKey and call the bstMaxKey for the = case) *)      
+                                                        then BstNode(otherKey, (deleting leftSubtree otherKey), rightSubtree) (*this returns a node where it's leftsubtree is the return value of deleting it's leftSubtree *)
+                                                        else if targetKey > otherKey 
+                                                            then BstNode(otherKey, leftSubtree, (deleting rightSubtree,otherKey))
+                                                        else BstNode((bstMaxKey leftSubtree), leftSubtree, rightSubtree)(*this line means the node should have its 'key' value defined as the LARGEST key in leftSubtree, and the left / right sides of the node defined as leftSubtree and rightSubtree   *)
+in bstDelete tree targetKey (**the actual call to the function after 'deleting' is defined *)
+;;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let bstDelete tree targetKey =
+    if bstIsIn targetKey tree= false 
+    then tree
+    else let rec deleting subtree targetKey =                                       (*this means the key was found and therefore we need to figure out which type of node we'll be deleting by matching with rules *)
+        match subtree
+        with
+        BstEmpty -> tree |
+        BstNode(otherKey, BstEmpty, BstEmpty) -> 
+                                                if targetKey < otherKey
+                                                then deleting ??
+                                                else if targetKey > otherKey
+                                                    then deleting ?? 
+                                                else BstEmpty     (*this means both keys are EQUAL*)
+        BstNode(otherKey, BstEmpty, rightSubtree) -> 
+                                                    if targetKey < otherKey
+                                                    then deleting rightSubtree targetKey
+                                                    else BstNode(otherKey, BstEmpty, rightSubtree)  (*this means both keys are EQUAL*)
+        BstNode(otherKey, leftSubtree, BstEmpty) -> 
+                                                    if targetKey < otherKey
+                                                    then deleting leftSubtree targetKey
+                                                    else BstNode(otherKey, leftSubtree, BstEmpty)   (*this means both keys are EQUAL*)
+        BstNode(otherKey, leftSubtree, rightSubtree) -> if targetKey < otherKey
+                                                        then BstNode(otherKey, (deleting leftSubtree otherKey), rightSubtree) 
+                                                        else if targetKey > otherKey 
+                                                            then BstNode(otherKey, leftSubtree, (deleting rightSubtree otherKey))
+                                                        else BstNode((bstMaxKey leftSubtree), leftSubtree, rightSubtree)
+        in deleting tree targetKey;;
+;;

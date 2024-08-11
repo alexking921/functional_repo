@@ -1,0 +1,121 @@
+Lab 2 
+
+IMPERITIVE EQUIVALENT:
+
+double euler() 
+{ 
+  double c = 1; 
+  double s = 0; 
+  double t = 1; 
+  while (t > ε) 
+  { 
+    s = s + t; 
+    t = t / c; 
+    c = c + 1; 
+  } 
+  return s; 
+}
+
+
+
+
+let rec gcd i j = 
+  if i <> 0 
+  then if j > i 
+       then gcd i (j - i) 
+       else gcd (i - j) j 
+  else j ;;
+
+
+
+
+
+IF GCD of n and d is 1, then create a tuple with n / d
+ 
+IF GCD is not 1, then use the ANSWER of GCD OUTPUT as the numerator
+
+
+
+
+ (( n / Gcd n d ),  (d / (gcd n d ));;
+
+(Num a) 
+
+
+Def sum a b = 
+(   ( (  (Num a)*(den b)  )     +     (  (den a)*(num b)   )   ) /  ( (den a)*(den b)  )
+
+
+
+
+NUMERATOR ---so pass this output to RAT as the 'a' argument
+ (       (  (Num a)*(den b)  )     +     (  (den a)*(num b)   )    )  
+
+
+DENOMINATOR---so pass this out to RAT as the 'd' argument
+  ( (den a)*(den b)  )
+
+
+Let sum a b = 
+Rat (((num a)*(den b)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
